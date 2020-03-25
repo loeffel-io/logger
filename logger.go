@@ -4,11 +4,20 @@ import (
 	"github.com/getsentry/sentry-go"
 	log "github.com/sirupsen/logrus"
 	"sync"
+	"time"
 )
 
 type Logger struct {
-	Debug bool
+	SentryHub *sentry.Hub
+	Debug     bool
 	*sync.RWMutex
+}
+
+func (logger *Logger) GetSentryHub() *sentry.Hub {
+	logger.RLock()
+	defer logger.RUnlock()
+
+	return logger.SentryHub
 }
 
 func (logger *Logger) GetDebug() bool {
@@ -26,7 +35,9 @@ func (logger *Logger) SetDebug(debug bool) {
 }
 
 func (logger *Logger) Error(err error) {
-	sentry.CaptureException(err)
+	defer logger.GetSentryHub().Flush(2 * time.Second)
+
+	logger.GetSentryHub().CaptureException(err)
 	log.Fatal(err)
 }
 
@@ -35,7 +46,7 @@ func (logger *Logger) Log(err error) {
 		return
 	}
 
-	sentry.CaptureException(err)
+	logger.GetSentryHub().CaptureException(err)
 	log.Warn(err)
 }
 
@@ -44,5 +55,6 @@ func (logger *Logger) Print(msg string) {
 		return
 	}
 
+	logger.GetSentryHub().CaptureMessage(msg)
 	log.Info(msg)
 }
