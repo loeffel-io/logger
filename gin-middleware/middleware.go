@@ -17,7 +17,7 @@ func Logger(logger *logger.Logger) gin.HandlerFunc {
 		c.Writer = ginWriter
 		c.Next()
 
-		if c.IsAborted() {
+		if c.IsAborted() && ginWriter.Status() >= 400 {
 			logger.Log(errors.Errorf(
 				"aborted (%d) with %s @ %s",
 				ginWriter.Status(),
