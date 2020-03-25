@@ -2,9 +2,9 @@ package gin_middleware
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/loeffel-io/logger/v2"
+	"github.com/pkg/errors"
 )
 
 func Logger(logger *logger.Logger) gin.HandlerFunc {
@@ -18,7 +18,7 @@ func Logger(logger *logger.Logger) gin.HandlerFunc {
 		c.Next()
 
 		if c.IsAborted() {
-			logger.Log(fmt.Errorf(
+			logger.Log(errors.Errorf(
 				"aborted (%d) with %s @ %s",
 				ginWriter.Status(),
 				ginWriter.body.String(),
