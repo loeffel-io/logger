@@ -42,19 +42,17 @@ func (logger *Logger) Error(err error) {
 }
 
 func (logger *Logger) Log(err error) {
-	if !logger.GetDebug() {
-		return
-	}
-
 	logger.GetSentryHub().CaptureException(err)
-	log.Warn(err)
+
+	if logger.GetDebug() {
+		log.Warn(err)
+	}
 }
 
 func (logger *Logger) Print(msg string) {
-	if !logger.GetDebug() {
-		return
-	}
-
 	logger.GetSentryHub().CaptureMessage(msg)
-	log.Info(msg)
+
+	if logger.GetDebug() {
+		log.Info(msg)
+	}
 }
