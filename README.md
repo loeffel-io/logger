@@ -30,4 +30,6 @@ logger := &l.Logger{
 }
 
 logger.Error(fmt.Errorf("test"))
+logger.Log(fmt.Errorf("test"))
+logger.Print("test")
 ```
