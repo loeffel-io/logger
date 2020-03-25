@@ -28,4 +28,6 @@ logger := &l.Logger{
     SentryHub: sentry.CurrentHub(),
     RWMutex:   new(sync.RWMutex),
 }
+
+logger.Error(fmt.Errorf("test"))
 ```
