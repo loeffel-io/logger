@@ -5,22 +5,25 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/loeffel-io/logger/v2"
-	"log"
 )
 
 func Logger(logger *logger.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		gWriter := &writer{
+		ginWriter := &writer{
 			body:           new(bytes.Buffer),
 			ResponseWriter: c.Writer,
 		}
 
-		c.Writer = gWriter
+		c.Writer = ginWriter
 		c.Next()
 
 		if c.IsAborted() {
-			log.Printf("%+v %+v %+v", c.Request.RequestURI, gWriter.body, gWriter.Status())
-			logger.Log(fmt.Errorf("asdf"))
+			logger.Log(fmt.Errorf(
+				"aborted (%d) with %s @ %s",
+				ginWriter.Status(),
+				ginWriter.body.String(),
+				c.Request.RequestURI,
+			))
 		}
 	}
 }
