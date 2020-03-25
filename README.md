@@ -10,6 +10,7 @@ go get -u github.com/loeffel-io/logger/v2
 
 ## Example
 
+### Setup
 ```go 
 if err = sentry.Init(sentry.ClientOptions{
     Dsn:       os.Getenv("SENTRY"),
@@ -28,8 +29,20 @@ logger := &l.Logger{
     SentryHub: sentry.CurrentHub(),
     RWMutex:   new(sync.RWMutex),
 }
+```
 
+### Logging
+
+```go 
 logger.Error(fmt.Errorf("test"))
 logger.Log(fmt.Errorf("test"))
 logger.Print("test")
+```
+
+### Gin Middleware
+
+```go
+r := gin.Default()
+r.Use(gin.Recovery())
+r.Use(gin_middleware.Logger(api.getLogger()))
 ```
