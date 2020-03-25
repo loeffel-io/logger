@@ -44,5 +44,5 @@ logger.Print("test")
 ```go
 r := gin.Default()
 r.Use(gin.Recovery())
-r.Use(gin_middleware.Logger(api.getLogger()))
+r.Use(gin_middleware.Logger(logger))
 ```
