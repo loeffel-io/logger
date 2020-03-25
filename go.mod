@@ -1,4 +1,4 @@
-module github.com/loeffel-io/logger
+module github.com/loeffel-io/logger/v2
 
 go 1.13
 
