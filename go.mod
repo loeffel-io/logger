@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/getsentry/sentry-go v0.5.1
-	github.com/gin-gonic/gin v1.4.0
+	github.com/gin-gonic/gin v1.7.0
 	github.com/pkg/errors v0.8.1
 	github.com/sirupsen/logrus v1.5.0
 )
